@@ -1,3 +1,8 @@
+UP = (0, 1)
+DOWN = (0, -1)
+RIGHT = (1, 0)
+LEFT = (-1, 0)
+
 class Snake:
     def __init__(self, ini_body, ini_direction):
         # ini is initial
@@ -23,12 +28,20 @@ class Game:
     def __init__(self, height, width):
         self.height = height
         self.width = width
+        self.snake = Snake([(0, 0), (1, 0), (2, 0), (3, 0)], DOWN)
 
     def boardMatrix(self):
         return [[" " for i in range(self.width)] for j in range(self.height)]
 
     def render(self):
         matrix = self.boardMatrix()
+
+
+        snake = self.snake
+        matrix[snake.body[-1][0]][snake.body[-1][1]] = "X"
+        for set in snake.body[:-1]:
+            matrix[set[0]][set[1]] = "#"
+
         print("+----------+")
         for row in matrix:
             print("|", end="")
@@ -36,6 +49,9 @@ class Game:
                 print(cell, end="")
             print("|")
         print("+----------+")
+
+
+
 
 game = Game(10, 10)
 game.render()

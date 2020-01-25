@@ -28,7 +28,7 @@ class Game:
     def __init__(self, height, width):
         self.height = height
         self.width = width
-        self.snake = Snake([(0, 0), (1, 0), (2, 0), (3, 0)], DOWN)
+        self.snake = Snake([(0, 0), (1, 0), (2, 0), (3, 0)], UP)
 
     def boardMatrix(self):
         return [[" " for i in range(self.width)] for j in range(self.height)]
@@ -38,9 +38,10 @@ class Game:
 
 
         snake = self.snake
+        print(snake.body)
         matrix[snake.body[-1][0]][snake.body[-1][1]] = "X"
         for set in snake.body[:-1]:
-            matrix[set[0]][set[1]] = "#"
+            matrix[set[0]][set[1]] = "O"
 
         print("+----------+")
         for row in matrix:
@@ -53,8 +54,25 @@ class Game:
 
 
 
+
 game = Game(10, 10)
 game.render()
+while True:
+    snake = game.snake
+    x = input()
+    if len(x) != 1:
+        print("Bye, you Monster!")
+        exit(1)
+    elif x == "w":
+        snake.take_step((snake.head()[0] + UP[0], snake.head()[1] + UP[1]))
+    elif x == "a":
+        snake.take_step((snake.head()[0] + LEFT[0], snake.head()[1] + LEFT[1]))
+    elif x == "s":
+        snake.take_step((snake.head()[0] + DOWN[0], snake.head()[1] + DOWN[1]))
+    elif x == "d":
+        snake.take_step((snake.head()[0] + RIGHT[0], snake.head()[1] + RIGHT[1]))
+    game.render()
+
 # UP = (0, 1)
 # DOWN = (0, -1)
 # RIGHT = (1, 0)

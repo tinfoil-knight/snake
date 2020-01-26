@@ -3,6 +3,7 @@
 # LEFT = (-1, 0)
 # RIGHT = (1, 0)
 import time
+import random
 
 UP = (1, 0)
 DOWN = (-1, 0)
@@ -24,6 +25,9 @@ def addY(setA, setB):
 
 def addCo(setA, setB):
     return (addX(setA, setB), addY(setA, setB))
+
+def decideApple():
+    return (random.randrange(0, 10), random.randrange(0, 10))
 
 
 
@@ -54,6 +58,7 @@ class Apple:
     pass
 
 
+
 class Game:
 
     def __init__(self, height, width):
@@ -67,17 +72,39 @@ class Game:
     def render(self):
         matrix = self.boardMatrix()
 
-
         snake = self.snake
         print(snake.body)
 
-        matrix[snake.head()[0]][snake.head()[1]] = "X"
+        if snake.head() == (4, 4):
+            print("Apple Eaten")
+            snake.body.insert(-2, (4,4))
+            # TODO: Assign the snake body to a new variable and operate on it
+        else:
+            matrix[4][4] = "*"
+
+
+        matrix[cX(snake.head())][cY(snake.head())] = "X"
         for set in snake.body[:-1]:
-            matrix[set[0]][set[1]] = "O"
+            matrix[cX(set)][cY(set)] = "O"
+        x = True
+
+        # Randomizer
+        # while x == True:
+        #     setApple = decideApple()
+        #     for cell in snake.body:
+        #         if cell != setApple:
+        #             x = False
+        # matrix[cX(setApple)][cY(setApple)] = "*"
+
+
+
+
+
+
 
         # Reversing the matrix so that (0, 0) is at bottom
         reverse = matrix[::-1]
-        print("+----------+")
+        print("++++++++++++")
         for row in reverse:
             print("|", end="")
             for cell in row:
@@ -86,7 +113,8 @@ class Game:
                 else:
                     print(cell, end="")
             print("|")
-        print("+----------+")
+        print("++++++++++++")
+
 
 
 
@@ -106,10 +134,10 @@ def runTheGame():
                     print("You collided unto thyself!")
                     print("You Lost!")
                     exit(2)
-                    
+
             # Handles negative indexes while crossing boundary
-            for set in snake.body:
-                if cX(set) < 0 or cY(set) < 0:
+            for cell in snake.body:
+                if cX(cell) < 0 or cY(cell) < 0:
                     print("You Lost!")
                     exit(4)
 
@@ -150,7 +178,7 @@ def runTheGame():
             process()
         else:
             print("You are pressing the wrong keys.")
- # and reset to default color
+
 while True:
     runTheGame()
 

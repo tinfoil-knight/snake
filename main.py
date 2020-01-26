@@ -2,6 +2,7 @@
 # DOWN = (0, -1)
 # LEFT = (-1, 0)
 # RIGHT = (1, 0)
+import time
 
 UP = (1, 0)
 DOWN = (-1, 0)
@@ -42,6 +43,11 @@ class Snake:
     def head(self):
         return self.body[-1]
 
+    def process(self, direction):
+        # TODO: Write a method that runs take_step and set_direction
+        pass
+
+
 
 
 class Apple:
@@ -75,7 +81,10 @@ class Game:
         for row in reverse:
             print("|", end="")
             for cell in row:
-                print(cell, end="")
+                if cell == "X" or "O":
+                    print('\033[32m'+cell+'\033[39m', end="")
+                else:
+                    print(cell, end="")
             print("|")
         print("+----------+")
 
@@ -85,38 +94,63 @@ class Game:
 
 game = Game(10, 10)
 game.render()
-while True:
-    snake = game.snake
-    x = input()
-    if len(x) != 1:
-        print("Press one key at a time.")
-        exit(1)
-    elif x == "w":
-        if snake.direction == DOWN:
-            print("You Lost!")
-            exit(1)
-        snake.set_direction(UP)
-        snake.take_step(addCo(snake.head(), UP))
-    elif x == "a":
-        if snake.direction == RIGHT:
-            print("You Lost!")
-            exit(1)
-        snake.set_direction(LEFT)
-        snake.take_step(addCo(snake.head(), LEFT))
-    elif x == "s":
-        if snake.direction == UP:
-            print("You Lost!")
-            exit(1)
-        snake.set_direction(DOWN)
-        snake.take_step(addCo(snake.head(), DOWN))
-    elif x == "d":
-        if snake.direction == RIGHT:
-            print("You Lost!")
-            exit(1)
-        snake.set_direction(RIGHT)
-        snake.take_step(addCo(snake.head(), RIGHT))
 
-    game.render()
+def runTheGame():
+        snake = game.snake
+        copy = snake.body.copy()
+
+        def process():
+            game.render()
+            for cell in copy:
+                if snake.head() == cell:
+                    print("You collided unto thyself!")
+                    print("You Lost!")
+                    exit(2)
+
+
+        x = input()
+        if len(x) != 1:
+            print("Press one key at a time.")
+            exit(3)
+        elif x == "w":
+            if snake.direction == DOWN:
+                print("You Lost!")
+                exit(1)
+            snake.set_direction(UP)
+            snake.take_step(addCo(snake.head(), UP))
+            process()
+        elif x == "a":
+            if snake.direction == RIGHT:
+                print("You Lost!")
+                exit(1)
+            snake.set_direction(LEFT)
+            snake.take_step(addCo(snake.head(), LEFT))
+            process()
+        elif x == "s":
+            if snake.direction == UP:
+                print("You Lost!")
+                exit(1)
+            snake.set_direction(DOWN)
+            snake.take_step(addCo(snake.head(), DOWN))
+            process()
+        elif x == "d":
+            if snake.direction == LEFT:
+                print("You Lost!")
+                exit(1)
+            snake.set_direction(RIGHT)
+            snake.take_step(addCo(snake.head(), RIGHT))
+            process()
+        else:
+            print("You are pressing the wrong keys.")
+ # and reset to default color
+while True:
+    runTheGame()
+
+
+
+# snake.take_step(addCo(snake.head(), snake.direction))
+# time.sleep(1)
+# game.render()
 
 # UP = (0, 1)
 # DOWN = (0, -1)

@@ -71,7 +71,7 @@ class Game:
         snake = self.snake
         print(snake.body)
 
-        matrix[snake.body[-1][0]][snake.body[-1][1]] = "X"
+        matrix[snake.head()[0]][snake.head()[1]] = "X"
         for set in snake.body[:-1]:
             matrix[set[0]][set[1]] = "O"
 
@@ -106,6 +106,14 @@ def runTheGame():
                     print("You collided unto thyself!")
                     print("You Lost!")
                     exit(2)
+                    
+            # Handles negative indexes while crossing boundary
+            for set in snake.body:
+                if cX(set) < 0 or cY(set) < 0:
+                    print("You Lost!")
+                    exit(4)
+
+
 
 
         x = input()

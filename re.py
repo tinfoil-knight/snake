@@ -1,5 +1,6 @@
 import time
 import curses
+import random
 
 directions = {
     curses.KEY_UP: (-1, 0),
@@ -11,31 +12,38 @@ directions = {
 class Game:
 
     def __init__(self):
-        self.snake = Snake([(0, i) for i in reversed(range(15))], directions[curses.KEY_RIGHT])
+        self.snake = Snake([(0, i) for i in reversed(range(4))], directions[curses.KEY_RIGHT])
         self.apple = Apple((4,4))
 
     def main(self, screen):
         curses.curs_set(0)    # Hide the cursor
         screen.nodelay(True)  # Don't block I/O calls
+        snake = self.snake
 
-        direction = self.snake.direction
+        direction = snake.direction
         score = 0
+
         while True:
             screen.erase()
 
-            screen.addstr(*self.snake.body[0], '@')
-            for segment in self.snake.body[1:]:
-                screen.addstr(*segment, '*')
+            screen.addstr(*snake.body[0], 'X')
+            for segment in snake.body[1:]:
+                screen.addstr(*segment, 'O')
 
-            if self.snake.head() == self.apple.position:
+            if snake.head() == self.apple.position:
                 score = score + 1
-                apple.getNew
-
-            self.snake.take_step(direction)
+                # Get a tuple of screen dimensions by using getmaxyx()
+                self.apple.position = self.apple.spawn(screen.getmaxyx())
+                snake.body.insert(0, tuple(map(sum, zip(snake.head(), direction))))
+            screen.addstr(*self.apple.position, '$')
+            snake.take_step(direction)
             direction = directions.get(screen.getch(), direction)
 
+            if len(snake.body) != len(set(snake.body)):
+                raise Collision("You collided unto thyself!")
+
             screen.refresh()
-            time.sleep(0.19)
+            time.sleep(0.1)
 
     def render(self):
         curses.wrapper(self.main)
@@ -61,13 +69,17 @@ class Apple:
     def __init__(self, position):
         self.position = position
 
-    def setNew():
-        self.position = (random.randrange(0, 10), random.randrange(0, 10))
+    def spawn(self, dimension):
+        return (random.randrange(0, dimension[0]), random.randrange(0, dimension[1]))
 
+class Error(Exception):
+    """Base class"""
+    pass
+
+class Collision(Error):
+    """Raised when the Snake collides into itself or the Wall"""
+    def __init__(self, message):
+        self.message = message
 
 game = Game()
 game.render()
-
-
-# Get a tuple of screen dimensions
-# screen.getmaxyx()

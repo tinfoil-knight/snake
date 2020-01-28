@@ -4,11 +4,7 @@ LEFT = (0, -1)
 RIGHT = (0, 1)
 
 
-import time
-import random
-
-
-
+import time, random
 
 # UNIVERSAL METHODS
 def cX(tuple):
@@ -174,12 +170,6 @@ while True:
 # snake.take_step(addCo(snake.head(), snake.direction))
 # time.sleep(1)
 # game.render()
-
-# UP = (0, 1)
-# DOWN = (0, -1)
-# RIGHT = (1, 0)
-# LEFT = (-1, 0)
-# You can add for diagonal movements like L+U, R+U, L+D, R+D
 
 # Body is stored as an array of tuples(co-ordinates). That means when snake moves,
 # the coordinate of the last part is removed (first element of array)

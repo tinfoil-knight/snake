@@ -16,11 +16,10 @@ def main(screen):
 
     while True:
         screen.erase()
-
         # Draw the snake
         screen.addstr(*snake[0], '@')
         for segment in snake[1:]:
-            screen.addstr(*segment, '*')
+            screen.addstr(*segment, 'O')
 
         # Move the snake
         snake.pop()

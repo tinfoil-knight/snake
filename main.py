@@ -1,14 +1,14 @@
-# UP = (0, 1)
-# DOWN = (0, -1)
-# LEFT = (-1, 0)
-# RIGHT = (1, 0)
-import time
-import random
-
 UP = (1, 0)
 DOWN = (-1, 0)
 LEFT = (0, -1)
 RIGHT = (0, 1)
+
+
+import time
+import random
+
+
+
 
 # UNIVERSAL METHODS
 def cX(tuple):
@@ -71,40 +71,15 @@ class Game:
 
     def render(self):
         matrix = self.boardMatrix()
-
         snake = self.snake
-        print(snake.body)
-
-        if snake.head() == (4, 4):
-            print("Apple Eaten")
-            snake.body.insert(-2, (4,4))
-            # TODO: Assign the snake body to a new variable and operate on it
-        else:
-            matrix[4][4] = "*"
-
 
         matrix[cX(snake.head())][cY(snake.head())] = "X"
         for set in snake.body[:-1]:
             matrix[cX(set)][cY(set)] = "O"
-        x = True
-
-        # Randomizer
-        # while x == True:
-        #     setApple = decideApple()
-        #     for cell in snake.body:
-        #         if cell != setApple:
-        #             x = False
-        # matrix[cX(setApple)][cY(setApple)] = "*"
-
-
-
-
-
-
 
         # Reversing the matrix so that (0, 0) is at bottom
         reverse = matrix[::-1]
-        print("++++++++++++")
+        print("++++++++++++++++++++++")
         for row in reverse:
             print("|", end="")
             for cell in row:
@@ -113,14 +88,15 @@ class Game:
                 else:
                     print(cell, end="")
             print("|")
-        print("++++++++++++")
+        print("++++++++++++++++++++++")
 
 
 
 
 
 
-game = Game(10, 10)
+# Running the Game
+game = Game(20, 20)
 game.render()
 
 def runTheGame():
@@ -148,6 +124,8 @@ def runTheGame():
         if len(x) != 1:
             print("Press one key at a time.")
             exit(3)
+
+
         elif x == "w":
             if snake.direction == DOWN:
                 print("You Lost!")
@@ -183,6 +161,15 @@ while True:
     runTheGame()
 
 
+
+# x = True
+# Randomizer
+# while x == True:
+#     setApple = decideApple()
+#     for cell in snake.body:
+#         if cell != setApple:
+#             x = False
+# matrix[cX(setApple)][cY(setApple)] = "*"
 
 # snake.take_step(addCo(snake.head(), snake.direction))
 # time.sleep(1)

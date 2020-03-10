@@ -23,24 +23,41 @@ class Game:
         direction = snake.direction
         score = 0
 
-        while True:
-            screen.erase()
+        state = True
 
-            screen.addstr(*snake.body[0], 'X')
-            for segment in snake.body[1:]:
-                screen.addstr(*segment, 'O')
+        while state == True:
+            try:
+                assert(len(snake.body) == len(set(snake.body)))
+            except:
+                state == False
+                screen.erase()
+                screen.addstr(0,0, "Thee collid'd unto thy-self!")
+                screen.addstr(1,0, f"Thy score : {score}")
+                screen.addstr(3,0, "Press Ctrl + C to exit.")
+            else:
+                try:
+                    screen.erase()
 
-            if snake.head() == self.apple.position:
-                score = score + 1
-                # Get a tuple of screen dimensions by using getmaxyx()
-                self.apple.position = self.apple.spawn(screen.getmaxyx())
-                snake.body.insert(0, tuple(map(sum, zip(snake.head(), direction))))
-            screen.addstr(*self.apple.position, '🍎')
-            snake.take_step(direction)
-            direction = directions.get(screen.getch(), direction)
+                    screen.addstr(*snake.body[0], 'X')
+                    for segment in snake.body[1:]:
+                        screen.addstr(*segment, 'O')
 
-            if len(snake.body) != len(set(snake.body)):
-                raise Collision("You collided unto thyself!")
+                    if snake.head() == self.apple.position:
+                        score = score + 1
+                        # Get a tuple of screen dimensions by using getmaxyx()
+                        self.apple.position = self.apple.spawn(screen.getmaxyx())
+                        snake.body.insert(0, tuple(map(sum, zip(snake.head(), direction))))
+
+                    screen.addstr(*self.apple.position, '🍎')
+                    snake.take_step(direction)
+
+                    direction = directions.get(screen.getch(), direction)
+                except:
+                    state == False
+                    screen.erase() 
+                    screen.addstr(0,0, "Thee collid'd into the big wall!")
+                    screen.addstr(1,0, f"Thy score : {score}")
+                    screen.addstr(3,0, "Press Ctrl + C to exit.")
 
             screen.refresh()
             time.sleep(0.1)
@@ -72,14 +89,14 @@ class Apple:
     def spawn(self, dimension):
         return (random.randrange(0, dimension[0]), random.randrange(0, dimension[1]))
 
-class Error(Exception):
-    """Base class"""
-    pass
+# class Error(Exception):
+#     """Base class"""
+#     pass
 
-class Collision(Error):
-    """Raised when the Snake collides into itself or the Wall"""
-    def __init__(self, message):
-        self.message = message
+# class Collision(Error):
+#     """Raised when the Snake collides into itself or the Wall"""
+#     def __init__(self, message):
+#         self.message = message
 
 game = Game()
 game.render()
